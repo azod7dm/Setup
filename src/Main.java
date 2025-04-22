@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 
 public class Main {
@@ -110,7 +109,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        try (FileWriter writer = new FileWriter(tempTxt.getAbsolutePath())){
+        try (FileWriter writer = new FileWriter(tempTxt.getAbsolutePath())) {
             for (String text : arrayTemp) {
                 writer.write(text);
                 writer.append("\n");
