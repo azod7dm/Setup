@@ -2,122 +2,64 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+
 
 public class Main {
+
+    private static String basePath = "C:/Games/";
+    private static StringBuilder sb = new StringBuilder();
+    private static ArrayList<String> arrayTemp = new ArrayList<>(Arrays.asList(
+            "src", "res", "savegames", "temp",
+            "src/main", "src/test",
+            "res/drawables", "res/vectors", "res/icons"
+    ));
+    private static ArrayList<String> arrFile = new ArrayList<>(Arrays.asList(
+            "src/main/Main.java", "src/main/Utils.java", "temp/temp.txt"
+    ));
+
     public static void main(String[] args) {
-        ArrayList<String> arrayTemp = new ArrayList();
+        createDir();
+        createFile(arrFile);
+        writeLog();
+    }
 
-        File src = new File("C:/Games/src");
-        if (src.mkdir()) {
-            arrayTemp.add("Directory \"" + src.getAbsolutePath() + "\" created");
-            System.out.println("Directory \"" + src.getAbsolutePath() + "\" created");
-
-            File main = new File("C:/Games/src/main");
-            if (main.mkdir()) {
-                arrayTemp.add("Directory \"" + main.getAbsolutePath() + "\" created");
-                System.out.println("Directory \"" + main.getAbsolutePath() + "\" created");
+    public static void createDir() {
+        for (String temp : arrayTemp) {
+            File file = new File(basePath + temp);
+            if (file.mkdir()) {
+                sb.append("Directory \"" + file.getAbsolutePath() + "\" created \n");
             } else {
-                System.out.println("Directory \"" + main.getAbsolutePath() + "\"  not created");
+                sb.append("Directory \"" + file.getAbsolutePath() + "\" not created \n");
             }
-
-            File test = new File("C:/Games/src/test");
-            if (test.mkdir()) {
-                arrayTemp.add("Directory \"" + test.getAbsolutePath() + "\" created");
-                System.out.println("Directory \"" + test.getAbsolutePath() + "\" created");
-            } else {
-                System.out.println("Directory \"" + test.getAbsolutePath() + "\" created");
-            }
-        } else {
-            System.out.println("Directory \"" + src.getAbsolutePath() + "\" not created");
         }
+    }
 
-        File res = new File("C:/Games/res");
-        if (res.mkdir()) {
-            arrayTemp.add("Directory \"" + res.getAbsolutePath() + "\" created");
-            System.out.println("Directory \"" + res.getAbsolutePath() + "\" created");
+    public static void createFile(ArrayList<String> arrayFile) {
+        for (String newFile : arrayFile) {
+            File file = Paths.get(basePath, newFile).toFile();
+            try {
 
-            File drawables = new File("C:/Games/res/drawables");
-            if (drawables.mkdir()) {
-                arrayTemp.add("Directory \"" + drawables.getAbsolutePath() + "\" created");
-                System.out.println("Directory \"" + drawables.getAbsolutePath() + "\" created");
-            } else {
-                System.out.println("Directory \"" + drawables.getAbsolutePath() + "\" not created");
+                if (file.createNewFile()) {
+                    sb.append("File \"" + file.getName() + "\" created in Directory \"" + file.getAbsolutePath() + "\" \n");
+                } else {
+                    sb.append("File \"" + file.getName() + "\" not created \n");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            File vectors = new File("C:/Games/res/vectors");
-            if (vectors.mkdir()) {
-                arrayTemp.add("Directory \"" + vectors.getAbsolutePath() + "\" created");
-                System.out.println("Directory \"" + vectors.getAbsolutePath() + "\" created");
-            } else {
-                System.out.println("Directory \"" + vectors.getAbsolutePath() + "\" not created");
-            }
-
-            File icons = new File("C:/Games/res/icons");
-            if (icons.mkdir()) {
-                arrayTemp.add("Directory \"" + icons.getAbsolutePath() + "\" created");
-                System.out.println("Directory \"" + icons.getAbsolutePath() + "\" created");
-            } else {
-                System.out.println("Directory \"" + icons.getAbsolutePath() + "\" not created");
-            }
-
-        } else {
-            System.out.println("Directory \"" + res.getAbsolutePath() + "\" not created");
         }
+    }
 
-        File savegames = new File("C:/Games/savegames");
-        if (savegames.mkdir()) {
-            arrayTemp.add("Directory \"" + savegames.getAbsolutePath() + "\" created");
-            System.out.println("Directory \"" + savegames.getAbsolutePath() + "\" created");
-        } else {
-            System.out.println("Directory \"" + savegames.getAbsolutePath() + "\" not created");
-        }
-
-        File temp = new File("C:/Games/temp");
-        if (temp.mkdir()) {
-            arrayTemp.add("Directory \"" + temp.getAbsolutePath() + "\" created");
-            System.out.println("Directory \"" + temp.getAbsolutePath() + "\" created");
-        } else {
-            System.out.println("Directory \"" + temp.getAbsolutePath() + "\" not created");
-        }
-
-        File mainJava = new File("C:/Games/src/main", "Main.java");
-        File utilsJava = new File("C:/Games/src/main", "Utils.java");
-        File tempTxt = new File("C:/Games/temp", "temp.txt");
-
-        try {
-            if (mainJava.createNewFile()) {
-                arrayTemp.add("File \"" + mainJava.getName() + "\" created in Directory \"" + mainJava.getAbsolutePath() + "\"");
-                System.out.println("File \"" + mainJava.getName() + "\" created in Directory \"" + mainJava.getAbsolutePath() + "\"");
-            } else {
-                System.out.println("File \"" + mainJava.getName() + "\" not created");
-            }
-
-            if (utilsJava.createNewFile()) {
-                arrayTemp.add("File \"" + utilsJava.getName() + "\" created in Directory \"" + utilsJava.getAbsolutePath() + "\"");
-                System.out.println("File \"" + utilsJava.getName() + "\" created in Directory \"" + utilsJava.getAbsolutePath() + "\"");
-            } else {
-                System.out.println("File \"" + utilsJava.getName() + "\" not created");
-            }
-
-            if (tempTxt.createNewFile()) {
-                arrayTemp.add("File \"" + tempTxt.getName() + "\" created in Directory \"" + tempTxt.getAbsolutePath() + "\"");
-                System.out.println("File \"" + tempTxt.getName() + "\" created in Directory \"" + tempTxt.getAbsolutePath() + "\"");
-            } else {
-                System.out.println("File \"" + tempTxt.getName() + "\" not created");
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (FileWriter writer = new FileWriter(tempTxt.getAbsolutePath())) {
-            for (String text : arrayTemp) {
-                writer.write(text);
-                writer.append("\n");
-            }
+    public static void writeLog() {
+        try (FileWriter writer = new FileWriter(basePath + "temp/temp.txt")) {
+            writer.write(sb.toString());
+            writer.append("\n");
             writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
